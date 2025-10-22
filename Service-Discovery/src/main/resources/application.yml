@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Service-Discovery
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+server:
+  port: ${PORT:8761}
+
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false

@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: booking-service
+
+
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://trolley.proxy.rlwy.net:47143/railway}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:ASDTMxskShzhAAskArtUcabreagvzssG}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: false
+
+
+
+
+
+server:
+  port: ${PORT:8082}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DEFAULT_ZONE:http://localhost:8761/eureka/}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
