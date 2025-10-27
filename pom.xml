@@ -37,8 +37,12 @@
 		<module>API-Gateway</module>
 		<module>Service-Discovery</module>
 		<module>common</module>
+        <module>payment-service</module>
+        <module>FlightHotel-Services</module>
+        <module>notification-service</module>
+        <module>search-service</module>
 
-	</modules>
+    </modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

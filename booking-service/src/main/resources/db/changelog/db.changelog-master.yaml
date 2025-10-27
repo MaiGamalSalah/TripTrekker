@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Mai
+      preConditions:
+        - onFail: MARK_RAN
+      changes:
+        - createTable:
+            tableName: booking
+            columns:
+              - column:
+                  name: booking_id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: booking_pkey
+
+              - column:
+                  name: user_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: flight_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: hotel_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: booking_date
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
