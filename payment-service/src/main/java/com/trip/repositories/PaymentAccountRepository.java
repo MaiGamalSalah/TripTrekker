@@ -1,10 +1,10 @@
 package com.trip.repositories;
 
-import com.trip.entities.Payment;
 import com.trip.entities.PaymentAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface PaymentRepository extends JpaRepository<Payment, Long> {
+public interface PaymentAccountRepository extends JpaRepository<PaymentAccount, Long> {
+    Optional<PaymentAccount> findByUserId(String userId);
 }

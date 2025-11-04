@@ -24,16 +24,21 @@ public class PaymentConsumer {
         try {
             Long bookingId = event.bookingId();
             Double amount = event.amount();
+            String userId = event.userId(); // خدناه من الـ event
 
-            Payment payment = paymentService.processPayment(bookingId, amount);
+            Payment payment = paymentService.processPayment(bookingId, amount, userId);
             System.out.println("Payment processed: " + payment);
 
-            PaymentCompletedEvent completedEvent = new PaymentCompletedEvent(bookingId, amount, payment.getStatus().name(), Instant.now());
+            PaymentCompletedEvent completedEvent = new PaymentCompletedEvent(
+                    bookingId,
+                    amount,
+                    payment.getStatus().name(),
+                    Instant.now()
+            );
 
             paymentProducer.publishPaymentCompleted(completedEvent);
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 }

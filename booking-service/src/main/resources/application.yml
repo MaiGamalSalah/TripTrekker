@@ -69,6 +69,15 @@ spring:
 
   security:
     oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: booking-service
+            client-secret: 3FA7ENb3Ez9HhcJmXHBIIRzj4CUfj4Wf
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8081/realms/tripTrekker
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8081/realms/tripTrekker
@@ -99,3 +108,7 @@ eureka:
     register-with-eureka: true
   instance:
     prefer-ip-address: true
+
+flight-hotel-service:
+  url: http://localhost:8083
+

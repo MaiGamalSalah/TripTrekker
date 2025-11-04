@@ -16,27 +16,64 @@ databaseChangeLog:
                   type: BIGSERIAL
                   constraints:
                     primaryKey: true
-
               - column:
                   name: booking_id
                   type: BIGINT
                   constraints:
                     nullable: false
-
               - column:
                   name: amount
                   type: DECIMAL(10,2)
                   constraints:
                     nullable: false
-
               - column:
                   name: status
                   type: VARCHAR(50)
                   constraints:
                     nullable: false
-
               - column:
                   name: created_at
                   type: TIMESTAMP
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: 2
+      author: mai
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: payment_account
+      changes:
+        - createTable:
+            tableName: payment_account
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: payment_account
+            columnNames: user_id
+            constraintName: uq_payment_account_user_id
+        - insert:
+            tableName: payment_account
+            columns:
+              - column:
+                  name: user_id
+                  value: "e7ae8f96-4095-49ff-825d-8f2b84c159cf"
+              - column:
+                  name: balance
+                  valueNumeric: 10000.00

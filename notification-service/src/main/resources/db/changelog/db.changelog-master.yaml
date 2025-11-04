@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: mai
+      changes:
+        - createTable:
+            tableName: notification
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+#              - column:
+#                  name: user_id
+#                  type: VARCHAR(255)
+              - column:
+                  name: message
+                  type: TEXT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: status
+                  type: VARCHAR(50)

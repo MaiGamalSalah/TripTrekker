@@ -1,0 +1,23 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="flight-1" author="mimo">
+        <createTable tableName="flight">
+            <column name="flight_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="flight_number" type="VARCHAR(100)"/>
+            <column name="origin" type="VARCHAR(100)"/>
+            <column name="destination" type="VARCHAR(100)"/>
+            <column name="departure_time" type="TIMESTAMP"/>
+            <column name="arrival_time" type="TIMESTAMP"/>
+            <column name="price" type="DECIMAL(10,2)"/>
+            <column name="available" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

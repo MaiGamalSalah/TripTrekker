@@ -6,10 +6,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-public class BookingServiceApplication {
-
+public class FlightHotelServicesApplication {
     public static void main(String[] args) {
-        SpringApplication.run(BookingServiceApplication.class, args);
-    }
+        SpringApplication.run(FlightHotelServicesApplication.class, args);
 
+    }
 }

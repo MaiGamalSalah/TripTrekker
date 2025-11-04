@@ -25,14 +25,10 @@ spring:
           keycloak:
             client-id: user-service
             client-secret: sHE4P6Ayr4EwUF4E1LTQmjuiuBGJQmO6
-            scope: openid, profile, email
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: client_credentials
         provider:
           keycloak:
-            issuer-uri: http://localhost:8081/realms/tripTrekker
-            user-name-attribute: preferred_username
-
+            token-uri: http://localhost:8081/realms/trip/protocol/openid-connect/token
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8081/realms/tripTrekker

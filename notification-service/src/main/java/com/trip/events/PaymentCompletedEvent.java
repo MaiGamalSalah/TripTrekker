@@ -4,8 +4,6 @@ import java.time.Instant;
 
 public record PaymentCompletedEvent(
         Long bookingId,
-
-        // String userId,
         Double amount,
         String status, // SUCCESS or FAILED
         Instant processedAt

@@ -1,49 +1,57 @@
 package com.trip.services;
 
 import com.trip.entities.Payment;
+import com.trip.entities.PaymentAccount;
 import com.trip.entities.PaymentStatus;
 import com.trip.events.PaymentCompletedEvent;
 import com.trip.messaging.KafkaProducerService;
+import com.trip.repositories.PaymentAccountRepository;
 import com.trip.repositories.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Service
-
+@RequiredArgsConstructor
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final PaymentAccountRepository paymentAccountRepository;
     private final KafkaProducerService kafkaProducerService;
 
-    public PaymentService(PaymentRepository paymentRepository, KafkaProducerService kafkaProducerService) {
-        this.paymentRepository = paymentRepository;
-        this.kafkaProducerService = kafkaProducerService;
-    }
+    @Transactional //  مهم جدًا علشان يضمن إن العملية كلها تتم أو تتراجع بالكامل
+    public Payment processPayment(Long bookingId, Double amount, String userId) throws InterruptedException {
+        System.out.println(" [PaymentService] Starting payment process for user: " + userId + ", amount: " + amount);
 
-    public Payment processPayment(Long bookingId, Double amount) throws InterruptedException {
-        // mock payment gateway
+        //  نجيب حساب المستخدم أو نعمل واحد جديد لو مش موجود
+        PaymentAccount account = paymentAccountRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    System.out.println("[PaymentService] No existing account found for user. Creating a new one...");
+                    PaymentAccount newAcc = PaymentAccount.builder()
+                            .userId(userId)
+                            .balance(5000.0) // mock balance
+                            .build();
+                    return paymentAccountRepository.save(newAcc);
+                });
 
-
-        //boolean isSuccess = new Random().nextBoolean();
-        //boolean isSuccess = true;
-        //boolean isSuccess = Math.random() > 0.2;
-
-
-        boolean isSuccess;
-        if (amount < 5000) {
-            isSuccess = Math.random() > 0.1;
-        } else {
-            isSuccess = Math.random() > 0.5;
-        }
+        System.out.println(" [PaymentService] Current balance for user " + userId + ": " + account.getBalance());
 
         Thread.sleep(1000); // simulate payment gateway delay
 
+        boolean isSuccess = false;
 
+        //  لو الرصيد كافي
+        if (account.getBalance() >= amount) {
+            // خصم المبلغ
+            account.setBalance(account.getBalance() - amount);
+            paymentAccountRepository.save(account);
+            isSuccess = true;
+        }
 
+        //  حفظ عملية الدفع في جدول payments
         Payment payment = Payment.builder()
                 .bookingId(bookingId)
                 .amount(amount)
@@ -53,15 +61,19 @@ public class PaymentService {
 
         paymentRepository.save(payment);
 
-        PaymentCompletedEvent event = new PaymentCompletedEvent(
-                bookingId,
-                amount,
-                payment.getStatus().toString(),
-                Instant.now()
-        );
-        kafkaProducerService.publishPaymentCompleted(event);
+        //  نبعث الإيفنت بس لو الدفع نجح
+        if (isSuccess) {
+            PaymentCompletedEvent event = new PaymentCompletedEvent(
+                    bookingId,
+                    amount,
+                    payment.getStatus().toString(),
+                    Instant.now()
+            );
+            kafkaProducerService.publishPaymentCompleted(event);
+        }
+        System.out.println(" [PaymentService] PaymentCompletedEvent sent for bookingId: " + bookingId);
+        System.out.println("------------------------------------------------------------");
 
         return payment;
     }
-
 }
