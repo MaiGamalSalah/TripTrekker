@@ -22,7 +22,7 @@ jobs:
           - name: booking-service
             path: booking-service
           - name: api-gateway
-            path: API-Gateway
+            path: Api-Gateway
           - name: service-discovery
             path: Service-Discovery
           - name: payment-service
