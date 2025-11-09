@@ -9,8 +9,7 @@ import java.util.List;
 
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {
-    List<Flight> findByDepartureTimeBefore(LocalDateTime time);
+    ///List<Flight> findByDepartureTimeBefore(LocalDateTime time);
     List<Flight> findByDepartureTimeBeforeOrDepartureTimeIsNull(LocalDateTime time);
-
 
 }

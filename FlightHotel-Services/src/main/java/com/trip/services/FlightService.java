@@ -21,9 +21,20 @@ public class FlightService {
     public Flight addFlight(Flight flight) {
         return flightRepository.save(flight);
     }
+
+
+
     public Flight getFlightById(Long id) {
         return flightRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Flight not found with id " + id));
+    }
+
+
+    public void makeFlightAvailable(Long id, boolean available) {
+        Flight f = flightRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Flight not found"));
+        f.setAvailable(available);
+        flightRepository.save(f);
     }
 
     //@Scheduled(cron = "0 0 3 * * *")

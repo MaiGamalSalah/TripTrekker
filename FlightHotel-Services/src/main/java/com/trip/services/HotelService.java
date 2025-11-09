@@ -20,15 +20,18 @@ public class HotelService {
     public Hotel addHotel(Hotel hotel) {
         return hotelRepository.save(hotel);
     }
+
     public Hotel getHotelById(Long id) {
         return hotelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id " + id));
     }
-//    @Scheduled(cron = "0 10 3 * * *")
-//    public void cleanupUnavailableHotels() {
-//        List<Hotel> unavailableHotels = hotelRepository.findByAvailableFalse();
-//        if (unavailableHotels.isEmpty()) return;
-//        System.out.println("Found " + unavailableHotels.size() + " unavailable hotels — checking...");
-//    }
+
+    public void makeHotelAvailable(Long id, boolean available) {
+        Hotel h = hotelRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Hotel not found"));
+        h.setAvailable(available);
+        hotelRepository.save(h);
+    }
+
 
 }

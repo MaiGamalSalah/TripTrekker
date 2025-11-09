@@ -28,42 +28,40 @@ public class FlightController {
     public Flight addFlight(@RequestBody Flight flight) {
         return flightService.addFlight(flight);
     }
+
     @GetMapping("/{id}")
     public Flight getFlightById(@PathVariable Long id) {
         return flightService.getFlightById(id);
     }
+
     @DeleteMapping("/cleanup-old")
     public ResponseEntity<String> cleanupOldFlights() {
         flightService.deleteOldFlights();
         return ResponseEntity.ok("Old flights cleaned up successfully.");
     }
+
     @PutMapping("/{flightId}/available")
     public ResponseEntity<String> makeFlightAvailable(@PathVariable Long flightId) {
         Optional<Flight> flightOpt = flightRepository.findById(flightId);
         if (flightOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         Flight flight = flightOpt.get();
-        flight.setAvailable(true); // أو flight.setStatus("AVAILABLE");
+        flight.setAvailable(true); //flight.setStatus("AVAILABLE");
         flightRepository.save(flight);
-
         return ResponseEntity.ok("Flight " + flightId + " is now available again.");
     }
+
     @PutMapping("/{flightId}/unavailable")
     public ResponseEntity<String> makeFlightUnavailable(@PathVariable Long flightId) {
         Optional<Flight> flightOpt = flightRepository.findById(flightId);
         if (flightOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         Flight flight = flightOpt.get();
         flight.setAvailable(false);
         flightRepository.save(flight);
         return ResponseEntity.ok("Flight " + flightId + " is now unavailable.");
     }
-
-
-
 }
 

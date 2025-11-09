@@ -21,7 +21,6 @@ public class BookingService {
     @Value("${flight-hotel-service.url}")
     private String flightHotelBaseUrl;
     private final WebClient webClient;
-
     private final BookingRepository bookingRepository;
     private final RestTemplate restTemplate = new RestTemplate();
     private final KafkaProducerService kafkaProducerService;

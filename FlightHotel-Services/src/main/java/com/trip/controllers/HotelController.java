@@ -29,6 +29,7 @@ public class HotelController {
     public Hotel addHotel(@RequestBody Hotel hotel) {
         return hotelService.addHotel(hotel);
     }
+
     @GetMapping("/{id}")
     public Hotel getHotelById(@PathVariable Long id) {
         return hotelService.getHotelById(id);
@@ -42,11 +43,9 @@ public class HotelController {
         if (hotelOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         Hotel hotel = hotelOpt.get();
         hotel.setAvailable(false);
         hotelRepository.save(hotel);
-
         return ResponseEntity.ok("Hotel " + hotelId + " marked as unavailable.");
     }
 
@@ -57,11 +56,9 @@ public class HotelController {
         if (hotelOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         Hotel hotel = hotelOpt.get();
         hotel.setAvailable(true);
         hotelRepository.save(hotel);
-
         return ResponseEntity.ok("Hotel " + hotelId + " is now available again.");
     }
 

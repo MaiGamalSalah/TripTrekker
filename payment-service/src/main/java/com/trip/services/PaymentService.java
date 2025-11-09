@@ -22,11 +22,11 @@ public class PaymentService {
     private final PaymentAccountRepository paymentAccountRepository;
     private final KafkaProducerService kafkaProducerService;
 
-    @Transactional //  مهم جدًا علشان يضمن إن العملية كلها تتم أو تتراجع بالكامل
+    @Transactional
     public Payment processPayment(Long bookingId, Double amount, String userId) throws InterruptedException {
         System.out.println(" [PaymentService] Starting payment process for user: " + userId + ", amount: " + amount);
 
-        //  نجيب حساب المستخدم أو نعمل واحد جديد لو مش موجود
+
         PaymentAccount account = paymentAccountRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     System.out.println("[PaymentService] No existing account found for user. Creating a new one...");

@@ -36,7 +36,7 @@
 		<module>booking-service</module>
 		<module>API-Gateway</module>
 		<module>Service-Discovery</module>
-		<module>common</module>
+
         <module>payment-service</module>
         <module>FlightHotel-Services</module>
         <module>notification-service</module>
